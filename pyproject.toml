@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intelligent-support-triage-engine"
+version = "1.0.0"
+description = "Enterprise-Grade Zero-LLM Autonomous Support Ticket Triage & Intent Routing Engine"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Enterprise Engineering Team" }
+]
+keywords = [
+    "ecommerce",
+    "customer-support",
+    "zero-llm",
+    "triage",
+    "nlp",
+    "windmill",
+    "n8n",
+    "zendesk",
+    "gorgias",
+    "shopify"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Customer Service",
+    "Topic :: Office/Business :: Financial :: Point-Of-Sale",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13"
+]
+dependencies = [
+    "scikit-learn>=1.4.0",
+    "nltk>=3.8.1",
+    "requests>=2.31.0",
+    "pydantic>=2.6.0",
+    "pyyaml>=6.0.1",
+    "psutil>=5.9.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "flake8>=7.0.0"
+]
+
+[project.scripts]
+support-triage = "scripts.deploy_and_test:main"
+support-simulate = "scripts.simulate_1m_live_operations:run_1m_simulation"

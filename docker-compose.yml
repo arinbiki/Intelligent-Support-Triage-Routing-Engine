@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  triage-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecom-support-triage-engine
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WINDMILL_BASE_URL=${WINDMILL_BASE_URL:-http://localhost:8080}
+      - WINDMILL_WORKSPACE=${WINDMILL_WORKSPACE:-demo}
+      - WINDMILL_TOKEN=${WINDMILL_TOKEN}
+      - N8N_BASE_URL=${N8N_BASE_URL}
+      - N8N_API_KEY=${N8N_API_KEY}
+    volumes:
+      - triage-db-data:/app/database
+      - ./reports:/app/reports
+    ports:
+      - "8085:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.path.insert(0, 'windmill/f/econ_support_triage'); import delighted_script; delighted_script.main('H', 'Ping', 'Standard')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  triage-db-data:
+    driver: local
