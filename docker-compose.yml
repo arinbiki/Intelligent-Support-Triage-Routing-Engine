@@ -28,3 +28,4 @@ services:
 volumes:
   triage-db-data:
     driver: local
+
