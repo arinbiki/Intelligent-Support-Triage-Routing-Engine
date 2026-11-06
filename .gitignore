@@ -1,0 +1,23 @@
+# Python virtual environments & bytecode
+.venv/
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment and sensitive keys
+.env
+*.pem
+*.key
+*.token
+
+# Databases and volatile logs
+*.db
+*.db-wal
+*.db-shm
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db

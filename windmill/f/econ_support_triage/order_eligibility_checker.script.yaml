@@ -1,0 +1,16 @@
+summary: 'ERP Order Return Eligibility Checker'
+description: 'Validates order delivery status, days elapsed since purchase, and final-sale policy exclusions.'
+kind: script
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  type: object
+  properties:
+    order_id:
+      type: string
+      description: 'Order ID to check (e.g. #84920)'
+    return_window_days:
+      type: integer
+      description: 'Standard return policy window in days'
+      default: 30
+  required:
+    - order_id

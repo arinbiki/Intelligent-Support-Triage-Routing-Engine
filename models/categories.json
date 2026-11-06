@@ -1,0 +1,11 @@
+{
+  "categories": [
+    "Billing",
+    "Fulfillment",
+    "General",
+    "Technical"
+  ],
+  "confidence_threshold": 0.85,
+  "escalation_sla_minutes": 15,
+  "standard_sla_minutes": 120
+}

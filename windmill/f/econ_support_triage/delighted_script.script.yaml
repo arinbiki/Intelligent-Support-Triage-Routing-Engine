@@ -1,0 +1,30 @@
+summary: 'Heuristic Support Triage & Intent Classifier'
+description: 'Zero-LLM deterministic ticket classification, VADER sentiment, urgency scoring, and refund intent detection.'
+kind: script
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  type: object
+  properties:
+    ticket_id:
+      type: string
+      description: 'Support ticket unique identifier'
+    text:
+      type: string
+      description: 'Sanitized ticket subject and body text'
+    customer_tier:
+      type: string
+      description: 'Customer priority tier (VIP or Standard)'
+      default: 'Standard'
+    extracted_order_ids:
+      type: array
+      items:
+        type: string
+      description: 'Extracted order IDs'
+      default: []
+    channel:
+      type: string
+      description: 'Originating contact channel'
+      default: 'email'
+  required:
+    - ticket_id
+    - text

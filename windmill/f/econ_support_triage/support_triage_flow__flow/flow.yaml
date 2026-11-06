@@ -1,0 +1,138 @@
+summary: Intelligent Support Triage & Intent Routing DAG
+description: Enterprise-grade Zero-LLM support ticket triage. Evaluates department
+  classification (TF-IDF + Calibrated LinearSVC), VADER sentiment, kill-switch urgency,
+  and automated ERP order return eligibility verification.
+value:
+  modules:
+    - id: heuristic_brain
+      summary: Step 1 - The Heuristic Brain (f/econ_support_triage/delighted_script)
+      value:
+        type: script
+        input_transforms:
+          channel:
+            type: javascript
+            expr: 'flow_input.channel || "email"'
+          customer_tier:
+            type: javascript
+            expr: 'flow_input.customer_tier || "Standard"'
+          extracted_order_ids:
+            type: javascript
+            expr: 'flow_input.extracted_order_ids || []'
+          text:
+            type: javascript
+            expr: 'flow_input.text'
+          ticket_id:
+            type: javascript
+            expr: 'flow_input.ticket_id'
+        path: f/econ_support_triage/delighted_script
+    - id: order_eligibility
+      summary: Step 2 - State Enrichment (ERP Order Return Eligibility Verification)
+      value:
+        type: script
+        input_transforms:
+          order_id:
+            type: javascript
+            expr: 'results.heuristic_brain.refund_intent.order_id || flow_input.order_id || ""'
+          return_window_days:
+            type: javascript
+            expr: 'flow_input.return_window_days || 30'
+        path: f/econ_support_triage/order_eligibility_checker
+    - id: execute_helpdesk_tool
+      summary: Step 3 - Helpdesk Tool Executor & SQLite Audit Ledger
+      value:
+        type: script
+        input_transforms:
+          applied_tags:
+            type: javascript
+            expr: 'results.heuristic_brain.routing.applied_tags'
+          assigned_queue:
+            type: javascript
+            expr: 'results.heuristic_brain.routing.assigned_queue'
+          confidence:
+            type: javascript
+            expr: 'results.heuristic_brain.confidence'
+          customer_tier:
+            type: javascript
+            expr: 'flow_input.customer_tier || "Standard"'
+          department:
+            type: javascript
+            expr: 'results.heuristic_brain.department'
+          kill_switch_triggered:
+            type: javascript
+            expr: 'results.heuristic_brain.urgency.kill_switch_triggered'
+          mock_mode:
+            type: javascript
+            expr: 'flow_input.mock_mode !== undefined ? flow_input.mock_mode : true'
+          n8n_webhook_url:
+            type: javascript
+            expr: 'flow_input.n8n_webhook_url || null'
+          refund_intent_detected:
+            type: javascript
+            expr: 'results.heuristic_brain.refund_intent.detected'
+          refund_order_id:
+            type: javascript
+            expr: 'results.heuristic_brain.refund_intent.order_id'
+          requires_human_approval:
+            type: javascript
+            expr: 'results.heuristic_brain.routing.requires_human_approval'
+          return_eligible:
+            type: javascript
+            expr: 'results.order_eligibility ? results.order_eligibility.return_eligible : null'
+          sentiment_compound:
+            type: javascript
+            expr: 'results.heuristic_brain.sentiment.compound'
+          sentiment_negative:
+            type: javascript
+            expr: 'results.heuristic_brain.sentiment.negative'
+          sla_minutes:
+            type: javascript
+            expr: 'results.heuristic_brain.routing.sla_minutes'
+          ticket_id:
+            type: javascript
+            expr: 'results.heuristic_brain.ticket_id'
+          trigger_keywords:
+            type: javascript
+            expr: 'results.heuristic_brain.urgency.trigger_keywords'
+          urgency_level:
+            type: javascript
+            expr: 'results.heuristic_brain.urgency.level'
+          urgency_score:
+            type: javascript
+            expr: 'results.heuristic_brain.urgency.score'
+        path: f/econ_support_triage/execute_helpdesk_tool
+schema:
+  $schema: https://json-schema.org/draft/2020-12/schema
+  type: object
+  order:
+    - ticket_id
+    - text
+    - customer_tier
+    - order_id
+    - channel
+    - mock_mode
+  properties:
+    channel:
+      type: string
+      description: Originating channel (email, chat, web_form)
+      default: email
+    customer_tier:
+      type: string
+      description: Priority tier (VIP or Standard)
+      default: Standard
+    mock_mode:
+      type: boolean
+      description: Whether to run in safe test/mock mode
+      default: true
+    order_id:
+      type: string
+      description: Order ID if provided upfront
+      default: null
+    text:
+      type: string
+      description: Sanitized customer message body
+    ticket_id:
+      type: string
+      description: Unique support ticket identifier
+  required:
+    - ticket_id
+    - text
