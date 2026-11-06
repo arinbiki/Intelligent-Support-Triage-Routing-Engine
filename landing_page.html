@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous Support Triage Engine | Executive Business Value & Ecosystem Deck</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+            },
+            accent: {
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+            },
+            purple: {
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      background-color: #060911;
+    }
+    .slide-viewport {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .slides-wrapper {
+      display: flex;
+      width: 200vw;
+      height: 100vh;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .slide-item {
+      width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 5.5rem 4rem 4rem 4rem;
+      overflow: hidden;
+    }
+    @media (max-width: 1024px) {
+      .slide-item {
+        padding: 5rem 1.5rem 3.5rem 1.5rem;
+      }
+    }
+    .glass-panel {
+      background: rgba(13, 19, 33, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .glass-card-interactive {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-interactive:hover {
+      background: rgba(30, 41, 59, 0.75);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px -10px rgba(14, 165, 233, 0.25);
+    }
+    .ambient-glow {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Custom scrollbar if any nested container needs it */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="text-slate-100 antialiased font-sans">
+
+  <!-- Ambient Light Backdrops -->
+  <div class="ambient-glow -top-32 -left-32 w-[38rem] h-[38rem] bg-indigo-600/15"></div>
+  <div class="ambient-glow top-1/2 -right-32 w-[42rem] h-[42rem] bg-emerald-500/10"></div>
+  <div class="ambient-glow -bottom-32 left-1/3 w-[35rem] h-[35rem] bg-cyan-600/15"></div>
+
+  <!-- Persistent Executive Presentation Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-6 sm:px-12 py-4 flex items-center justify-between border-b border-white/5 bg-slate-950/60 backdrop-blur-md">
+    <div class="flex items-center space-x-3.5">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-emerald-400 p-0.5 shadow-lg shadow-cyan-500/20 flex items-center justify-center">
+        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="font-display font-bold text-base tracking-tight text-white">AUTONOMOUS TRIAGE</span>
+          <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Executive Deck</span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-medium">Enterprise E-Commerce Operations & Revenue Protection</p>
+      </div>
+    </div>
+
+    <!-- Presentation Slide Switcher & Slide Tracker -->
+    <div class="flex items-center space-x-4">
+      <div class="hidden sm:flex items-center bg-slate-900/90 rounded-full p-1 border border-white/10 shadow-inner">
+        <button id="nav-btn-1" onclick="goToSlide(0)" class="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-cyan-500 text-slate-950 shadow-md">
+          Slide 1: Business Value & ROI
+        </button>
+        <button id="nav-btn-2" onclick="goToSlide(1)" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-all duration-300">
+          Slide 2: Industry Integrations
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-2 pl-2 border-l border-white/10">
+        <span id="slide-counter" class="font-display text-xs font-bold text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-800/40">
+          01 / 02
+        </span>
+        <button onclick="toggleFullScreen()" title="Toggle Fullscreen" class="p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-400 hover:text-white border border-white/10 transition">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Presentation Slides Viewport -->
+  <div class="slide-viewport">
+    <div class="slides-wrapper" id="slidesWrapper">
+
+      <!-- ========================================== -->
+      <!-- SLIDE 1: BUSINESS VALUES & FINANCIAL ROI   -->
+      <!-- ========================================== -->
+      <section class="slide-item">
+        <!-- Slide 1 Header Section -->
+        <div class="relative z-10 max-w-5xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span>Slide 01 • Strategic Impact & Financial Returns</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-tight">
+            Cut Support Triage Costs by <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">85%</span> While Protecting Core Margin
+          </h1>
+          <p class="mt-3 text-sm sm:text-lg text-slate-300 max-w-3xl leading-relaxed">
+            Eliminate human queue backlogs during peak traffic, protect VIP customer lifetime value, and prevent costly policy mistakes—with <span class="text-white font-semibold underline decoration-cyan-400 underline-offset-4">zero recurring AI cloud bills</span>.
+          </p>
+        </div>
+
+        <!-- Slide 1 Core Grid: 4 Strategic Pillars & Live ROI Summary -->
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-5 my-auto">
+          
+          <!-- Left Column: 4 Strategic Business Value Pillars (7 cols) -->
+          <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            
+            <!-- Value Pillar 1 -->
+            <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl relative overflow-hidden group">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-105 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h3 class="font-display font-bold text-base text-white">Sub-Second Triage Velocity</h3>
+              <p class="mt-1 text-xs text-slate-300 leading-relaxed">
+                Inbound customer tickets are categorized, enriched, and routed within milliseconds. Flash sales and BFCM surges no longer overwhelm front-line teams.
+              </p>
+              <div class="mt-3 inline-flex items-center text-[11px] font-bold text-cyan-400">
+                <span>99.2% Faster First Touch</span>
+                <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- Value Pillar 2 -->
+            <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl relative overflow-hidden group">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-105 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <h3 class="font-display font-bold text-base text-white">Zero Third-Party AI Fees</h3>
+              <p class="mt-1 text-xs text-slate-300 leading-relaxed">
+                No monthly per-token invoices from OpenAI or Anthropic. Save $1,500 to $4,000 every single month on AI infrastructure costs while maintaining 100% control.
+              </p>
+              <div class="mt-3 inline-flex items-center text-[11px] font-bold text-emerald-400">
+                <span>$0.00 External AI Cost</span>
+                <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- Value Pillar 3 -->
+            <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl relative overflow-hidden group">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-3 group-hover:scale-105 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <h3 class="font-display font-bold text-base text-white">Strict Margin Protection</h3>
+              <p class="mt-1 text-xs text-slate-300 leading-relaxed">
+                Eliminates erroneous refund commitments. The engine checks purchase dates and clearance exclusions in real-time, preventing unwarranted refund payouts.
+              </p>
+              <div class="mt-3 inline-flex items-center text-[11px] font-bold text-purple-400">
+                <span>Zero Policy Hallucinations</span>
+                <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- Value Pillar 4 -->
+            <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl relative overflow-hidden group">
+              <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mb-3 group-hover:scale-105 transition-transform">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                </svg>
+              </div>
+              <h3 class="font-display font-bold text-base text-white">Dispute & Legal Shield</h3>
+              <p class="mt-1 text-xs text-slate-300 leading-relaxed">
+                Critical threats (chargeback notices, attorney mentions, BBB filings) are flagged in real-time, paging managers to de-escalate before costly dispute fees occur.
+              </p>
+              <div class="mt-3 inline-flex items-center text-[11px] font-bold text-rose-400">
+                <span>15-Minute Critical SLA</span>
+                <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Executive ROI Dashboard Card (5 cols) -->
+          <div class="lg:col-span-5 glass-panel p-6 sm:p-7 rounded-3xl border border-cyan-500/20 relative flex flex-col justify-between shadow-2xl">
+            <div>
+              <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Financial Impact Model</span>
+                  <h4 class="font-display font-extrabold text-xl text-white">Annual Enterprise Returns</h4>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                  Verified ROI
+                </span>
+              </div>
+
+              <!-- ROI Metrics Grid -->
+              <div class="grid grid-cols-2 gap-4 my-5">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-white/5">
+                  <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Operational Savings</span>
+                  <span class="font-display font-black text-2xl sm:text-3xl text-emerald-400 mt-1 block">$185,000+</span>
+                  <span class="text-[10px] text-slate-400 mt-1 block">Annual wage & overhead savings</span>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-white/5">
+                  <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">First-Touch Latency</span>
+                  <span class="font-display font-black text-2xl sm:text-3xl text-cyan-400 mt-1 block">&lt; 1 Second</span>
+                  <span class="text-[10px] text-slate-400 mt-1 block">From 4.5 hours down to instant</span>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-white/5">
+                  <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Dispute Fee Reduction</span>
+                  <span class="font-display font-black text-2xl sm:text-3xl text-purple-400 mt-1 block">72%</span>
+                  <span class="text-[10px] text-slate-400 mt-1 block">Saved from chargeback fees</span>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-white/5">
+                  <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Payback Horizon</span>
+                  <span class="font-display font-black text-2xl sm:text-3xl text-amber-400 mt-1 block">&lt; 3 Weeks</span>
+                  <span class="text-[10px] text-slate-400 mt-1 block">Immediate break-even timeline</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call to Action Banner -->
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+              <div class="text-xs text-slate-300">
+                <span class="font-bold text-white">Ready to examine the tool ecosystem?</span>
+                <span class="block text-slate-400 text-[11px]">Seamless connection with your existing stack.</span>
+              </div>
+              <button onclick="goToSlide(1)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/25 flex items-center space-x-1.5 transition">
+                <span>View Integrations</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Slide 1 Bottom Trust Indicators -->
+        <div class="relative z-10 flex flex-wrap items-center justify-between pt-4 border-t border-white/5 text-xs text-slate-400">
+          <div class="flex items-center space-x-6">
+            <span class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>100% GDPR & CCPA Compliance</span>
+            </span>
+            <span class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span>Zero Customer Data Cloud Egress</span>
+            </span>
+            <span class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+              <span>14-Day Risk-Free Shadow Mode</span>
+            </span>
+          </div>
+          <span class="text-[11px] text-slate-400 hidden sm:inline">Use [ ← / → ] Arrow Keys or Slide Navigation to Switch</span>
+        </div>
+      </section>
+
+
+      <!-- ========================================== -->
+      <!-- SLIDE 2: INDUSTRY TOOLS INTEGRATION        -->
+      <!-- ========================================== -->
+      <section class="slide-item">
+        <!-- Slide 2 Header Section -->
+        <div class="relative z-10 max-w-5xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Slide 02 • Enterprise Ecosystem & Native Compatibility</span>
+          </div>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-tight">
+            Connects Effortlessly With Your <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Entire Commerce Stack</span>
+          </h1>
+          <p class="mt-3 text-sm sm:text-lg text-slate-300 max-w-3xl leading-relaxed">
+            No costly software migrations or workflow disruption. The engine operates as an autonomous, invisible co-pilot harmonizing your sales channels, helpdesks, and warehouse systems.
+          </p>
+        </div>
+
+        <!-- Slide 2 Core Grid: 5 Major Integration Hubs -->
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5 my-auto">
+
+          <!-- Integration Hub 1: E-Commerce Storefronts -->
+          <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-[#95BF47] group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#95BF47] bg-[#95BF47]/10 px-2 py-0.5 rounded">Storefronts</span>
+                <span class="w-2 h-2 rounded-full bg-[#95BF47]"></span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Shopify & WooCommerce</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Direct synchronization with your store catalogs, order databases, and customer profiles.
+              </p>
+              <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-[#95BF47] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Customer Lifetime Value (LTV) tagging</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-[#95BF47] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Real-time purchase history validation</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-[#95BF47] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>VIP tier status detection</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400 font-semibold">Store Data Sync</span>
+              <span class="text-xs font-bold text-[#95BF47]">Turnkey</span>
+            </div>
+          </div>
+
+          <!-- Integration Hub 2: Helpdesk CRMs -->
+          <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-[#03363D] group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded">Helpdesk CRMs</span>
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Zendesk & Gorgias</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Native integration with customer service suites, including Freshdesk and Salesforce Service Cloud.
+              </p>
+              <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Automated priority escalation</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Precision queue routing</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Internal audit note formulation</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400 font-semibold">Bi-Directional</span>
+              <span class="text-xs font-bold text-cyan-400">Live API</span>
+            </div>
+          </div>
+
+          <!-- Integration Hub 3: ERP & Logistics -->
+          <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-[#a855f7] group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">ERP & 3PL Logistics</span>
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">NetSuite & ShipBob</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Connects directly to warehouse fulfillment systems, SAP, ShipStation, and FedEx/UPS/DHL carriers.
+              </p>
+              <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-purple-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Live tracking milestone verification</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-purple-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Lost-in-transit claims processing</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-purple-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Return window eligibility check</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400 font-semibold">Warehouse Sync</span>
+              <span class="text-xs font-bold text-purple-400">Automated</span>
+            </div>
+          </div>
+
+          <!-- Integration Hub 4: Payment Dispute Shield -->
+          <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-[#6366f1] group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">Payments & Fraud</span>
+                <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Stripe & PayPal</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Connects merchant payment gateways to intercept customer disputes before bank chargebacks finalize.
+              </p>
+              <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Pre-chargeback dispute alert</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Duplicate payment reconciliation</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Unauthorized charge investigation</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400 font-semibold">Dispute Defense</span>
+              <span class="text-xs font-bold text-indigo-400">Real-Time</span>
+            </div>
+          </div>
+
+          <!-- Integration Hub 5: Operations & Management Alerting -->
+          <div class="glass-card-interactive p-4 sm:p-5 rounded-2xl flex flex-col justify-between border-t-2 border-t-[#ec4899] group">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded">Ops & Alerting</span>
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-white">Slack & Teams</h3>
+              <p class="mt-2 text-xs text-slate-300 leading-relaxed">
+                Notifies leadership and on-duty customer service managers when high-stakes incidents emerge.
+              </p>
+              <ul class="mt-4 space-y-2 text-xs text-slate-300">
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-pink-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>VIP customer emergency alerts</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-pink-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>Legal & compliance warning dispatch</span>
+                </li>
+                <li class="flex items-start space-x-1.5">
+                  <svg class="w-4 h-4 text-pink-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                  <span>PagerDuty on-call auto-paging</span>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-5 pt-3 border-t border-white/5 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400 font-semibold">Incident Dispatch</span>
+              <span class="text-xs font-bold text-pink-400">Instant</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Slide 2 Bottom Ecosystem Summary & Return Action -->
+        <div class="relative z-10 flex flex-wrap items-center justify-between pt-4 border-t border-white/5 text-xs text-slate-400">
+          <div class="flex items-center space-x-3">
+            <span class="text-slate-200 font-semibold">Zero Workflow Friction:</span>
+            <span>Your agents continue working inside their existing Zendesk/Gorgias screens without learning a new UI.</span>
+          </div>
+          <button onclick="goToSlide(0)" class="inline-flex items-center space-x-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span>Back to Slide 1 (Business Value & ROI)</span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Persistent Floating Presentation Controls (Arrows & Hotkeys) -->
+  <div class="fixed bottom-6 right-8 z-50 flex items-center space-x-3 bg-slate-950/80 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-2xl">
+    <button id="prevBtn" onclick="prevSlide()" title="Previous Slide [←]" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-slate-200 transition">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="flex items-center space-x-1 px-1">
+      <div id="dot-0" onclick="goToSlide(0)" class="w-2.5 h-2.5 rounded-full bg-cyan-400 transition-all duration-300 cursor-pointer"></div>
+      <div id="dot-1" onclick="goToSlide(1)" class="w-2.5 h-2.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer"></div>
+    </div>
+    <button id="nextBtn" onclick="nextSlide()" title="Next Slide [→]" class="w-9 h-9 rounded-full bg-slate-900 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-slate-200 transition">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- Keyboard Navigation & Presentation Engine Script -->
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 2;
+    const slidesWrapper = document.getElementById('slidesWrapper');
+    const slideCounter = document.getElementById('slide-counter');
+    const navBtn1 = document.getElementById('nav-btn-1');
+    const navBtn2 = document.getElementById('nav-btn-2');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dot0 = document.getElementById('dot-0');
+    const dot1 = document.getElementById('dot-1');
+
+    function updatePresentationState() {
+      // Slide transform transition
+      slidesWrapper.style.transform = `translateX(-${currentSlide * 100}vw)`;
+
+      // Slide counter
+      slideCounter.textContent = `0${currentSlide + 1} / 0${totalSlides}`;
+
+      // Navigation Header Buttons
+      if (currentSlide === 0) {
+        navBtn1.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-cyan-500 text-slate-950 shadow-md";
+        navBtn2.className = "px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-all duration-300";
+        dot0.className = "w-6 h-2.5 rounded-full bg-cyan-400 transition-all duration-300 cursor-pointer";
+        dot1.className = "w-2.5 h-2.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer";
+        prevBtn.disabled = true;
+        nextBtn.disabled = false;
+      } else {
+        navBtn1.className = "px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-all duration-300";
+        navBtn2.className = "px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 bg-emerald-500 text-slate-950 shadow-md";
+        dot0.className = "w-2.5 h-2.5 rounded-full bg-slate-600 transition-all duration-300 cursor-pointer";
+        dot1.className = "w-6 h-2.5 rounded-full bg-emerald-400 transition-all duration-300 cursor-pointer";
+        prevBtn.disabled = false;
+        nextBtn.disabled = true;
+      }
+    }
+
+    function goToSlide(index) {
+      if (index >= 0 && index < totalSlides) {
+        currentSlide = index;
+        updatePresentationState();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updatePresentationState();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updatePresentationState();
+      }
+    }
+
+    // Keyboard navigation (ArrowLeft, ArrowRight, Space)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Touch swipe support for presentation slides
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) {
+        nextSlide();
+      } else if (touchEndX > touchStartX + 50) {
+        prevSlide();
+      }
+    }, false);
+
+    // Fullscreen Toggle
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Initialize presentation layout
+    updatePresentationState();
+  </script>
+</body>
+</html>
