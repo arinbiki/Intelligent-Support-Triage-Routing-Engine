@@ -162,3 +162,4 @@ def check_order_return_eligibility(order_id: str, return_window_days: int = 30) 
 
 def main(order_id: str, return_window_days: int = 30) -> dict:
     return check_order_return_eligibility(order_id, return_window_days)
+

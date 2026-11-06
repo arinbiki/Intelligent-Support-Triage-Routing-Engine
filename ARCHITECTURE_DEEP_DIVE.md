@@ -103,3 +103,4 @@ $$\text{Eligible} = (\text{Status} == \text{"DELIVERED"}) \land (\neg \text{IsFi
 | **Standard** | Billing | 3 (Critical) | $\ge 0.85$ | True (Eligible) | Auto-tag Urgent + Auto-approve label | `URGENT_ESCALATIONS` | 15 min |
 | **Standard** | Fulfillment | 1 (Normal) | $\ge 0.85$ | False | Auto-route to carrier specialist | `Fulfillment_Team` | 120 min |
 | **Standard** | Any | Any | $< 0.85$ | Any | Low Confidence Gate (Review Required) | `HUMAN_TRIAGE` | 60 min |
+

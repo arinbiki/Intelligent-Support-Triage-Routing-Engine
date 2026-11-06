@@ -76,3 +76,4 @@ CREATE TABLE IF NOT EXISTS shadow_evaluations (
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+

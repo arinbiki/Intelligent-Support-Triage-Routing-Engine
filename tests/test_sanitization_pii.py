@@ -14,8 +14,8 @@ class TestSanitizationAndPII(unittest.TestCase):
         cc_regex = r"\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11}|(?:\d{4}[ -]?){3}\d{4})\b"
         clean = re.sub(cc_regex, "[REDACTED_CC]", clean)
 
-        # 3. Redact Phone Numbers
-        phone_regex = r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b"
+        # 3. Redact Phone Numbers (US & International E.164 formats)
+        phone_regex = r"(?:\+?\d{1,3}[-.\s]?)?(?:\(?\d{1,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{3,4}\b"
         clean = re.sub(phone_regex, "[REDACTED_PHONE]", clean)
 
         # 4. Redact Emails
